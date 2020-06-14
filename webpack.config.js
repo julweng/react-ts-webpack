@@ -4,7 +4,7 @@ const rules = [
   {
     test: /\.tsx?/,
     exclude: /node_modules/,
-    loader: 'babel-loader'
+    use: ['babel-loader'],
   }
 ]
 
@@ -13,6 +13,7 @@ module.exports = {
   entry: './src/index.tsx',
   output: {
     path: path.resolve(__dirname, 'build'),
+    publicPath: '/',
     filename: 'bundle.js',
   },
   module: { rules },
@@ -23,4 +24,5 @@ module.exports = {
     contentBase: './',
     port: 3000,
   },
+  devtool: 'inline-source-map'
 };
