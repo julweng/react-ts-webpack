@@ -2,6 +2,9 @@ import React, { Fragment, useEffect, useState, useContext, useReducer } from 're
 import ReactDOM from 'react-dom'
 import { Parent, Child } from './context'
 import { Store, StoreProvider } from './store'
+import { fetchDataAction, toggleFavAction } from './action'
+import EpisodesList from './EpisodeList'
+import './index.css'
 
 type FormElem = React.FormEvent<HTMLFormElement>
 
@@ -52,41 +55,20 @@ export default function App(): JSX.Element {
     }
   }
 
-  const [count, dispatch] = useReducer(reducer, 0) 
+  const [count, dispatch] = useReducer(reducer, 0)
 
   // rick and morty episode search
-  interface IEpisode {
-    id: number
-    name: string
-    airdate: string
-    airstamp: string
-    airtime: string
-    image: {
-      medium: string
-      original: string
-    }
-    number: number
-    runtime: number
-    season: number
-    summary: string
-    url: string
-  }
+  const { storeState, dispatchAction } = useContext(Store)
 
-  const {state, dispatchAction} = useContext(Store)
+  const props = {
+    episodes: storeState.episode,
+    favorites: storeState.favorites,
+    toggleFavAction
+  }
 
   useEffect(() => {
-    state.episodes.length === 0 && fetchDataAction()
+    storeState.episodes.length === 0 && fetchDataAction(dispatchAction)
   })
-
-  const fetchDataAction = async () => {
-    const URL = 'https://api.tvmaze.com/singlesearch/shows?q=rick-&-morty&embed=episodes'
-    const data = await fetch(URL)
-    const dataJSON = await data.json()
-    return dispatchAction({
-      type: 'FETCH_DATA',
-      payload: dataJSON._embedded.episodes
-    })
-  }
 
   return (
     <Fragment>
@@ -112,20 +94,15 @@ export default function App(): JSX.Element {
 
         ))}
       </section>
-      <h1>Rick and Morty</h1>
-      <p>Pick your favorite episode!!!</p>
-      <section>
-          {state.episodes.map((episode:IEpisode) =>{
-            return (
-              <section key={episode.id}>
-                <img src={episode.image.medium} alt={`Rick and Morty ${episode.name}`} />
-                <div>{episode.name}</div>
-                <section>
-                  Season: {episode.season} Number: {episode.number}
-                </section>
-              </section>
-            )
-          })}
+      <div>
+        <h1 className="episode-header">Rick and Morty</h1>
+        <p>Pick your favorite episode!!!</p>
+      </div>
+      <div>
+        Favorite(s): {storeState.favorites.length}
+      </div>
+      <section className="episode-layout">
+        <EpisodesList {...props} />
       </section>
     </Fragment>
   )

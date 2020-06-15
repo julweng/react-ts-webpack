@@ -5,8 +5,12 @@ const rules = [
     test: /\.tsx?/,
     exclude: /node_modules/,
     use: ['babel-loader'],
-  }
-]
+  },
+  {
+    test: /\.css$/,
+    use: ['style-loader', 'css-loader'],
+  },
+];
 
 module.exports = {
   target: 'web',
@@ -16,7 +20,7 @@ module.exports = {
     publicPath: '/',
     filename: 'bundle.js',
   },
-  module: { rules },
+  module: {rules},
   resolve: {
     extensions: ['.ts', '.tsx', '.js'],
   },
@@ -24,5 +28,5 @@ module.exports = {
     contentBase: './',
     port: 3000,
   },
-  devtool: 'inline-source-map'
+  devtool: 'inline-source-map',
 };
