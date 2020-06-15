@@ -1,10 +1,13 @@
-import React, { Fragment, useEffect, useState, useContext, useReducer } from 'react'
+import React, { Fragment, useEffect, useState, useContext, useReducer, lazy, Suspense } from 'react'
 import ReactDOM from 'react-dom'
 import { Parent, Child } from './context'
 import { Store, StoreProvider } from './store'
 import { fetchDataAction, toggleFavAction } from './action'
-import EpisodesList from './EpisodeList'
 import './index.css'
+
+const EpisodeList = lazy<any>(() => import('./EpisodeList'))
+
+const renderLoader = () => <div>Loading...</div>
 
 type FormElem = React.FormEvent<HTMLFormElement>
 
@@ -61,7 +64,7 @@ export default function App(): JSX.Element {
   const { storeState, dispatchAction } = useContext(Store)
 
   const props = {
-    episodes: storeState.episode,
+    episodes: storeState.episodes,
     favorites: storeState.favorites,
     toggleFavAction
   }
@@ -69,7 +72,7 @@ export default function App(): JSX.Element {
   useEffect(() => {
     storeState.episodes.length === 0 && fetchDataAction(dispatchAction)
   })
-
+console.log(storeState)
   return (
     <Fragment>
       <h1>Todo List</h1>
@@ -101,9 +104,11 @@ export default function App(): JSX.Element {
       <div>
         Favorite(s): {storeState.favorites.length}
       </div>
-      <section className="episode-layout">
-        <EpisodesList {...props} />
-      </section>
+      <Suspense fallback={renderLoader()}>
+        <section className="episode-layout">
+          <EpisodeList {...props} />
+        </section>
+      </Suspense>
     </Fragment>
   )
 }

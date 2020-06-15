@@ -1,7 +1,7 @@
 import React from 'react'
 import { IEpisode } from './interfaces'
 
-const EpisodesList = (props: any): JSX.Element => {
+const EpisodeList = (props: any): JSX.Element => {
   const { episodes, toggleFavAction, favorites, dispatchAction } = props
   return (
     <>
@@ -25,4 +25,4 @@ const EpisodesList = (props: any): JSX.Element => {
   )
 }
 
-export default EpisodesList
+export default EpisodeList
