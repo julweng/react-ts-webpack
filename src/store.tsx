@@ -1,4 +1,4 @@
-import React, { createContext } from 'react'
+import React, { createContext, useReducer } from 'react'
 
 interface IState {
   episodes: [],
@@ -15,7 +15,7 @@ const initialState: IState = {
   favorites: []
 }
 
-export const Store = createContext<IState>(initialState)
+export const Store = createContext<IState | any>(initialState)
 
 export const reducer = (state: IState, action: IAction) => {
   switch (action.type) {
@@ -27,5 +27,6 @@ export const reducer = (state: IState, action: IAction) => {
 }
 
 export const StoreProvider = (props: any): JSX.Element => {
-  return <Store.Provider value={initialState}>{props.children}</Store.Provider>
+  const [state, dispatchAction] = useReducer(reducer, initialState)
+  return <Store.Provider value={{state, dispatchAction}}>{props.children}</Store.Provider>
 }
