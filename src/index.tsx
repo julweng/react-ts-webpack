@@ -1,6 +1,7 @@
-import React, { Fragment, useState } from 'react'
+import React, { Fragment, useState, useContext, useReducer } from 'react'
 import ReactDOM from 'react-dom'
 import { Parent, Child } from './context'
+import { Store, StoreProvider } from './store'
 
 type FormElem = React.FormEvent<HTMLFormElement>
 
@@ -36,8 +37,33 @@ export default function App(): JSX.Element {
     setTodos(newTodos)
   }
 
+  const store = useContext(Store)
+
+  const reducer = (state = 0, action: string) => {
+    switch (action) {
+      case 'ADD':
+        return state + 1
+      case 'SUB':
+        return state - 1
+      case 'RES':
+        return 0
+      default:
+        return state
+    }
+  }
+
+  const [number, setNumber] = useState('')
+  const [count, dispatch] = useReducer(reducer, 0)
+
   return (
     <Fragment>
+      {console.log(store)}
+      <>
+        <div>{count}</div>
+        <button onClick={() => dispatch('ADD')}>+</button>
+        <button onClick={() => dispatch('SUB')}>-</button>
+        <button onClick={() => dispatch('RES')}>reset</button>
+      </>
       <h1>Todo List</h1>
       <Parent><Child /></Parent>
       <form onSubmit={handleSubmit}>
@@ -54,10 +80,12 @@ export default function App(): JSX.Element {
 
         ))}
       </section>
+      <h1>Rick and Morty</h1>
+      <p>Pick your favorite episode!!!</p>
     </Fragment>
   )
 }
 
 const root = document.getElementById('app-root')
 
-ReactDOM.render(<App />, root)
+ReactDOM.render(<StoreProvider><App /></StoreProvider>, root)
