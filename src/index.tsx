@@ -55,6 +55,23 @@ export default function App(): JSX.Element {
   const [count, dispatch] = useReducer(reducer, 0) 
 
   // rick and morty episode search
+  interface IEpisode {
+    id: number
+    name: string
+    airdate: string
+    airstamp: string
+    airtime: string
+    image: {
+      medium: string
+      original: string
+    }
+    number: number
+    runtime: number
+    season: number
+    summary: string
+    url: string
+  }
+
   const {state, dispatchAction} = useContext(Store)
 
   useEffect(() => {
@@ -98,7 +115,7 @@ export default function App(): JSX.Element {
       <h1>Rick and Morty</h1>
       <p>Pick your favorite episode!!!</p>
       <section>
-          {state.episodes.map((episode:any) =>{
+          {state.episodes.map((episode:IEpisode) =>{
             return (
               <section key={episode.id}>
                 <img src={episode.image.medium} alt={`Rick and Morty ${episode.name}`} />

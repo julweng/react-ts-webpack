@@ -1,14 +1,15 @@
 import React, { createContext, useReducer } from 'react'
 
 interface IState {
-  episodes: [],
+  episodes: []
   favorites: []
 }
 
 interface IAction {
-  type: string,
+  type: string
   payload: any // for now
 }
+
 
 const initialState: IState = {
   episodes: [],
