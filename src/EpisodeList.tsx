@@ -1,7 +1,7 @@
 import React from 'react'
-import { IEpisode } from './interfaces'
+import { IEpisode, IEpisodeProps } from './interfaces'
 
-const EpisodeList = (props: any): JSX.Element => {
+const EpisodeList = (props: IEpisodeProps): JSX.Element => {
   const { episodes, toggleFavAction, favorites, dispatchAction } = props
   return (
     <>

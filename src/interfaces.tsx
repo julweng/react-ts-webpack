@@ -1,17 +1,23 @@
+import { Dispatch, toggleFavActionType } from './types'
 /**
 |--------------------------------------------------
 | all the interfaces
 |--------------------------------------------------
 */
 
+export interface ITodo {
+  text: string
+  complete: boolean
+}
+
 export interface IState {
-  episodes: Array<any>
-  favorites: Array<any>
+  episodes: IEpisode[]
+  favorites: IEpisode[]
 }
 
 export interface IAction {
   type: string
-  payload: any // for now
+  payload: IEpisode[] | IEpisode
 }
 
 export interface IEpisode {
@@ -29,4 +35,11 @@ export interface IEpisode {
   season: number
   summary: string
   url: string
+}
+
+export interface IEpisodeProps {
+  episodes: IEpisode[]
+  toggleFavAction: toggleFavActionType
+  favorites: IEpisode[]
+  dispatchAction: Dispatch
 }

@@ -1,8 +1,6 @@
-import { useContext } from 'react'
-import { IAction, IEpisode, IState } from './interfaces'
-import { Store } from './store'
+import { IAction, IEpisode } from './interfaces'
+import { dispatchActionType } from './types'
 
-type dispatchActionType = (action: IAction) => IAction
 
 export const fetchDataAction = async (dispatchAction: dispatchActionType) => {
   const URL = 'https://api.tvmaze.com/singlesearch/shows?q=rick-&-morty&embed=episodes'
@@ -14,7 +12,7 @@ export const fetchDataAction = async (dispatchAction: dispatchActionType) => {
   })
 }
 
-export const toggleFavAction = (episode: IEpisode, favorites: [IEpisode], dispatchAction: dispatchActionType): IAction => {
+export const toggleFavAction = (episode: IEpisode, favorites: IEpisode[], dispatchAction: dispatchActionType): IAction => {
   const dispatchObj = {
     type: favorites.includes(episode) ? 'REMOVE_FAV' : 'ADD_FAV',
     payload: episode

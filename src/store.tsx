@@ -9,7 +9,7 @@ const initialState: IState = {
 
 export const Store = createContext<IState | any>(initialState)
 
-export const StoreProvider = (props: any): JSX.Element => {
+export const StoreProvider = ({ children }: JSX.ElementChildrenAttribute): JSX.Element => {
   const [storeState, dispatchAction] = useReducer(reducer, initialState)
-  return <Store.Provider value={{storeState, dispatchAction}}>{props.children}</Store.Provider>
+  return <Store.Provider value={{ storeState, dispatchAction }}>{children}</Store.Provider>
 }
